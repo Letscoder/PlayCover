@@ -2,7 +2,7 @@
 //  ContentView.swift
 //  PlayCover
 //
-//  Created by Alex on 14.02.2021.
+//  Created by Alex on 13.02.2021.
 //
 
 import SwiftUI

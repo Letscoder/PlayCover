@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -11,6 +11,9 @@
 		FAEF25BB25D8A6D8002A6F7A /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAEF25BA25D8A6D8002A6F7A /* ContentView.swift */; };
 		FAEF25BD25D8A6D9002A6F7A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FAEF25BC25D8A6D9002A6F7A /* Assets.xcassets */; };
 		FAEF25C025D8A6D9002A6F7A /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FAEF25BF25D8A6D9002A6F7A /* Preview Assets.xcassets */; };
+		FAEF25CB25D8A70A002A6F7A /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAEF25C925D8A70A002A6F7A /* GameScene.swift */; };
+		FAEF25CC25D8A70A002A6F7A /* Controller.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAEF25CA25D8A70A002A6F7A /* Controller.swift */; };
+		FAEF25D025D8A738002A6F7A /* HotKey in Frameworks */ = {isa = PBXBuildFile; productRef = FAEF25CF25D8A738002A6F7A /* HotKey */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -21,6 +24,8 @@
 		FAEF25BF25D8A6D9002A6F7A /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		FAEF25C125D8A6D9002A6F7A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		FAEF25C225D8A6D9002A6F7A /* PlayCover.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = PlayCover.entitlements; sourceTree = "<group>"; };
+		FAEF25C925D8A70A002A6F7A /* GameScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameScene.swift; sourceTree = "<group>"; };
+		FAEF25CA25D8A70A002A6F7A /* Controller.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Controller.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -28,6 +33,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FAEF25D025D8A738002A6F7A /* HotKey in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -53,6 +59,8 @@
 		FAEF25B725D8A6D8002A6F7A /* PlayCover */ = {
 			isa = PBXGroup;
 			children = (
+				FAEF25CA25D8A70A002A6F7A /* Controller.swift */,
+				FAEF25C925D8A70A002A6F7A /* GameScene.swift */,
 				FAEF25B825D8A6D8002A6F7A /* PlayCoverApp.swift */,
 				FAEF25BA25D8A6D8002A6F7A /* ContentView.swift */,
 				FAEF25BC25D8A6D9002A6F7A /* Assets.xcassets */,
@@ -87,6 +95,9 @@
 			dependencies = (
 			);
 			name = PlayCover;
+			packageProductDependencies = (
+				FAEF25CF25D8A738002A6F7A /* HotKey */,
+			);
 			productName = PlayCover;
 			productReference = FAEF25B525D8A6D8002A6F7A /* PlayCover.app */;
 			productType = "com.apple.product-type.application";
@@ -114,6 +125,9 @@
 				Base,
 			);
 			mainGroup = FAEF25AC25D8A6D8002A6F7A;
+			packageReferences = (
+				FAEF25CE25D8A738002A6F7A /* XCRemoteSwiftPackageReference "HotKey" */,
+			);
 			productRefGroup = FAEF25B625D8A6D8002A6F7A /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -140,8 +154,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FAEF25CB25D8A70A002A6F7A /* GameScene.swift in Sources */,
 				FAEF25BB25D8A6D8002A6F7A /* ContentView.swift in Sources */,
 				FAEF25B925D8A6D8002A6F7A /* PlayCoverApp.swift in Sources */,
+				FAEF25CC25D8A70A002A6F7A /* Controller.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -333,6 +349,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		FAEF25CE25D8A738002A6F7A /* XCRemoteSwiftPackageReference "HotKey" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/soffes/HotKey";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.1.3;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		FAEF25CF25D8A738002A6F7A /* HotKey */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = FAEF25CE25D8A738002A6F7A /* XCRemoteSwiftPackageReference "HotKey" */;
+			productName = HotKey;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = FAEF25AD25D8A6D8002A6F7A /* Project object */;
 }
