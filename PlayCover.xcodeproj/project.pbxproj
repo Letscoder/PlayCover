@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		FAEF25B925D8A6D8002A6F7A /* PlayCoverApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAEF25B825D8A6D8002A6F7A /* PlayCoverApp.swift */; };
-		FAEF25BB25D8A6D8002A6F7A /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAEF25BA25D8A6D8002A6F7A /* ContentView.swift */; };
 		FAEF25BD25D8A6D9002A6F7A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FAEF25BC25D8A6D9002A6F7A /* Assets.xcassets */; };
 		FAEF25C025D8A6D9002A6F7A /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FAEF25BF25D8A6D9002A6F7A /* Preview Assets.xcassets */; };
 		FAEF25CB25D8A70A002A6F7A /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAEF25C925D8A70A002A6F7A /* GameScene.swift */; };
@@ -19,7 +18,6 @@
 /* Begin PBXFileReference section */
 		FAEF25B525D8A6D8002A6F7A /* PlayCover.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PlayCover.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FAEF25B825D8A6D8002A6F7A /* PlayCoverApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayCoverApp.swift; sourceTree = "<group>"; };
-		FAEF25BA25D8A6D8002A6F7A /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		FAEF25BC25D8A6D9002A6F7A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		FAEF25BF25D8A6D9002A6F7A /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		FAEF25C125D8A6D9002A6F7A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -62,7 +60,6 @@
 				FAEF25CA25D8A70A002A6F7A /* Controller.swift */,
 				FAEF25C925D8A70A002A6F7A /* GameScene.swift */,
 				FAEF25B825D8A6D8002A6F7A /* PlayCoverApp.swift */,
-				FAEF25BA25D8A6D8002A6F7A /* ContentView.swift */,
 				FAEF25BC25D8A6D9002A6F7A /* Assets.xcassets */,
 				FAEF25C125D8A6D9002A6F7A /* Info.plist */,
 				FAEF25C225D8A6D9002A6F7A /* PlayCover.entitlements */,
@@ -155,7 +152,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				FAEF25CB25D8A70A002A6F7A /* GameScene.swift in Sources */,
-				FAEF25BB25D8A6D8002A6F7A /* ContentView.swift in Sources */,
 				FAEF25B925D8A6D8002A6F7A /* PlayCoverApp.swift in Sources */,
 				FAEF25CC25D8A70A002A6F7A /* Controller.swift in Sources */,
 			);
