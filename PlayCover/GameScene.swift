@@ -7,7 +7,6 @@
 
 import Foundation
 import SpriteKit
-import HotKey
 
 class GameScene: SKScene {
     
@@ -20,6 +19,7 @@ class GameScene: SKScene {
     override func update(_ currentTime: TimeInterval) {
         controller.updateCamera()
         controller.updateJoystick()
+        controller.updateButtons()
     }
     
 }

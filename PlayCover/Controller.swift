@@ -1,6 +1,5 @@
 import SwiftUI
 import Foundation
-import HotKey
 import UserNotifications
 import SpriteKit
 import Carbon.HIToolbox
@@ -12,16 +11,18 @@ class Controller {
     let source = CGEventSource.init(stateID: CGEventSourceStateID.combinedSessionState)
     
     var buttons = [
-        Key.space : false,
-        Key.e : false,
-        Key.w : false,
-        Key.s : false,
-        Key.a : false,
-        Key.d : false,
-        Key.downArrow : false,
-        Key.upArrow : false,
-        Key.rightArrow : false,
-        Key.leftArrow : false,
+        3 : false,
+        49 : false,
+        57 : false,
+        14 : false,
+        13 : false,
+        1 : false,
+        0 : false,
+        2 : false,
+        125 : false,
+        126 : false,
+        124 : false,
+        123 : false,
     ]
 
     func performClick(point: CGPoint){
@@ -43,16 +44,16 @@ class Controller {
         var moveDx = CGFloat(310)
         var moveDy = CGFloat(740)
         
-            if(buttons[Key.w] == true){
+            if(buttons[13] == true){
                 moveDy = CGFloat(700)
             }
-            if(buttons[Key.s] == true){
+            if(buttons[1] == true){
                 moveDy = CGFloat(800)
             }
-            if(buttons[Key.a] == true){
+            if(buttons[0] == true){
                 moveDx = CGFloat(250)
             }
-            if(buttons[Key.d] == true){
+            if(buttons[2] == true){
                 moveDx = CGFloat(350)
             }
         
@@ -90,16 +91,16 @@ class Controller {
         var cameraDx = CGFloat(0)
         var cameraDy = CGFloat(0)
         
-        if(buttons[Key.downArrow] == true){
+        if(buttons[125] == true){
             cameraDy = CGFloat(2)
         }
-        if(buttons[Key.upArrow] == true){
+        if(buttons[126] == true){
             cameraDy = CGFloat(-2)
         }
-        if(buttons[Key.rightArrow] == true){
+        if(buttons[124] == true){
             cameraDx = CGFloat(2)
         }
-        if(buttons[Key.leftArrow] == true){
+        if(buttons[123] == true){
             cameraDx = CGFloat(-2)
         }
         
@@ -114,21 +115,46 @@ class Controller {
         }
     }
     
+    let RUN_BTN = CGPoint(x: 1225, y: 800)
+    let SPACE_BTN = CGPoint(x: 1230, y: 670)
+    let ACTION_BTN  = CGPoint(x: 950, y: 450)
+    
+    func updateButtons(){
+        if(buttons[57] == true){
+            performClick(point: RUN_BTN)
+        }
+        if(buttons[3] == true){
+            performClick(point: ACTION_BTN)
+        }
+        if(buttons[49] == true){
+            performClick(point: SPACE_BTN)
+        }
+    }
+    
     func initController(){
         source?.localEventsSuppressionInterval = 0
         performClick(point: SCREEN_CENTER)
-
-        var buttonList = [HotKey]()
-        for (key, value) in buttons{
-            var nKey = HotKey(key: key, modifiers: [])
-            nKey.keyDownHandler = {
-                self.buttons[key] = true
-            nKey.keyUpHandler = {
-                self.buttons[key] = false
-            }
-            buttonList.append(nKey)
+        
+        NSEvent.addGlobalMonitorForEvents(matching: NSEvent.EventTypeMask.keyDown, handler: {(keyEvent:NSEvent) in
+           
+            self.buttons[Int(keyEvent.keyCode)] = true
+        
+            })
+        
+        NSEvent.addGlobalMonitorForEvents(matching: NSEvent.EventTypeMask.keyUp, handler: {(keyEvent:NSEvent) in
+           
+            self.buttons[Int(keyEvent.keyCode)] = false
+        
+            })
+        
+        NSEvent.addGlobalMonitorForEvents(matching: NSEvent.EventTypeMask.flagsChanged, handler: {(keyEvent:NSEvent) in
+           
+            switch keyEvent.modifierFlags.intersection(.deviceIndependentFlagsMask) {
+            case [.shift]: self.buttons[57] = !self.buttons[57]!
+             default:break
         }
+        }
+            )
     }
   }
     
-}
