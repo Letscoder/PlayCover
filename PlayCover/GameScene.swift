@@ -17,6 +17,7 @@ class GameScene: SKScene {
     }
     
     override func update(_ currentTime: TimeInterval) {
+        controller.updateCommands()
         controller.updateCamera()
         controller.updateJoystick()
         controller.updateButtons()

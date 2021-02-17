@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		FA711B7625DD5A7500A99AEF /* KeyMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA711B7525DD5A7500A99AEF /* KeyMap.swift */; };
 		FAEF25B925D8A6D8002A6F7A /* PlayCoverApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAEF25B825D8A6D8002A6F7A /* PlayCoverApp.swift */; };
 		FAEF25BD25D8A6D9002A6F7A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FAEF25BC25D8A6D9002A6F7A /* Assets.xcassets */; };
 		FAEF25C025D8A6D9002A6F7A /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FAEF25BF25D8A6D9002A6F7A /* Preview Assets.xcassets */; };
@@ -15,6 +16,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		FA711B7525DD5A7500A99AEF /* KeyMap.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyMap.swift; sourceTree = "<group>"; };
 		FAEF25B525D8A6D8002A6F7A /* PlayCover.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PlayCover.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FAEF25B825D8A6D8002A6F7A /* PlayCoverApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayCoverApp.swift; sourceTree = "<group>"; };
 		FAEF25BC25D8A6D9002A6F7A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -55,6 +57,7 @@
 		FAEF25B725D8A6D8002A6F7A /* PlayCover */ = {
 			isa = PBXGroup;
 			children = (
+				FA711B7525DD5A7500A99AEF /* KeyMap.swift */,
 				FAEF25CA25D8A70A002A6F7A /* Controller.swift */,
 				FAEF25C925D8A70A002A6F7A /* GameScene.swift */,
 				FAEF25B825D8A6D8002A6F7A /* PlayCoverApp.swift */,
@@ -149,6 +152,7 @@
 			files = (
 				FAEF25CB25D8A70A002A6F7A /* GameScene.swift in Sources */,
 				FAEF25B925D8A6D8002A6F7A /* PlayCoverApp.swift in Sources */,
+				FA711B7625DD5A7500A99AEF /* KeyMap.swift in Sources */,
 				FAEF25CC25D8A70A002A6F7A /* Controller.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
