@@ -3,6 +3,7 @@ import Foundation
 import UserNotifications
 import SpriteKit
 import Carbon.HIToolbox
+import Cocoa
 
 let SCREEN_CENTER = CGPoint(x: 720, y: 450)
 
@@ -26,8 +27,39 @@ class Controller {
         Keycode.d: false,
         Keycode.e: false,
         Keycode.f: false,
-        Keycode.r: false
+        Keycode.r: false,
+        Keycode.q: false,
+        Keycode.one: false,
+        Keycode.two: false,
+        Keycode.three: false,
+        Keycode.c: false
     ]
+    
+    var perform = [
+        0 : 666
+    ]
+    
+    var performMouse = [
+        130 : CGPoint(x:878.3984375 , y:424.51171875),
+        141 : CGPoint(x:878.3984375 , y:424.51171875),
+        325 : CGPoint(x:786.54296875 , y:753.5546875),
+        338 : CGPoint(x:786.54296875 , y:753.5546875),
+        392 : CGPoint(x:786.54296875 , y:753.5546875),
+        405 : CGPoint(x:786.54296875 , y:753.5546875),
+        451 : CGPoint(x:786.54296875 , y:753.5546875),
+        463 : CGPoint(x:786.54296875 , y:753.5546875),
+        510 : CGPoint(x:786.54296875 , y:753.5546875),
+        521 : CGPoint(x:786.54296875 , y:753.5546875),
+        564 : CGPoint(x:786.54296875 , y:753.5546875),
+        575 : CGPoint(x:786.54296875 , y:753.5546875),
+        620 : CGPoint(x:786.54296875 , y:753.5546875),
+        631 : CGPoint(x:786.54296875 , y:753.5546875),
+        712 : CGPoint(x:869.12109375 , y:744.82421875),
+        722 : CGPoint(x:869.12109375 , y:744.82421875),
+        782 : CGPoint(x:869.12109375 , y:744.82421875),
+        791 : CGPoint(x:869.12109375 , y:744.82421875)
+    ]
+    
 
     func performClick(point: CGPoint){
         DispatchQueue.main.async {
@@ -35,6 +67,20 @@ class Controller {
             let eventUp = CGEvent(mouseEventSource: self.source, mouseType: .leftMouseUp, mouseCursorPosition: point, mouseButton: .left)
             eventDown?.post(tap: .cghidEventTap)
             eventUp?.post(tap: .cghidEventTap)
+        }
+    }
+    
+    func rightMouseUp(point: CGPoint){
+        DispatchQueue.main.async {
+            let eventUp = CGEvent(mouseEventSource: self.source, mouseType: .rightMouseUp, mouseCursorPosition: point, mouseButton: .right)
+            eventUp?.post(tap: .cghidEventTap)
+        }
+    }
+    
+    func rightMouseDown(point: CGPoint){
+        DispatchQueue.main.async {
+            let eventDown = CGEvent(mouseEventSource: self.source, mouseType: .rightMouseDown, mouseCursorPosition: point , mouseButton: .right)
+            eventDown?.post(tap: .cghidEventTap)
         }
     }
 
@@ -133,14 +179,29 @@ class Controller {
     let ATTACK_BTN  = CGPoint(x: 1100, y: 750)
     let BURST_BTN  = CGPoint(x: 890, y: 835)
     
+    let FIRST_BTN  = CGPoint(x: 1260, y: 372)
+    let SECOND_BTN  = CGPoint(x: 1260, y: 440)
+    let THIRD_BTN  = CGPoint(x: 1260, y: 500)
+    
+    let SWIM_BTN  = CGPoint(x: 1230, y:800)
+    
     var shiftCounter = 0
     
     func updateButtons(){
+        if buttons[Keycode.one]! == (true){
+            performClick(point: FIRST_BTN)
+        }
+        if buttons[Keycode.two]! == (true){
+            performClick(point: SECOND_BTN)
+        }
+        if buttons[Keycode.three]! == (true){
+            performClick(point: THIRD_BTN)
+        }
         if buttons[Keycode.m]! == (true){
             performClick(point: RUN_BTN)
         }
-        if buttons[Keycode.rightMouse]! == (true){
-            performClick(point: ATTACK_BTN)
+        if buttons[Keycode.q]! == (true){
+            performClick(point: ABILITY_BTN)
         }
         if buttons[Keycode.f]! == (true){
             performClick(point: ACTION_BTN)
@@ -149,25 +210,90 @@ class Controller {
             performClick(point: SPACE_BTN)
         }
         if buttons[Keycode.e]! == (true){
-            performClick(point: ABILITY_BTN)
+            performClick(point: ATTACK_BTN)
         }
         if buttons[Keycode.r]! == (true){
             performClick(point: BURST_BTN)
         }
+        if buttons[Keycode.c]! == (true){
+            performClick(point: SWIM_BTN)
+        }
     }
     
+    var commands = [String]()
     func recordCommand(key: UInt16){
         let p = "\(counter) : \(key),"
-        print(p)
+        commands.append(p)
+    }
+    var mouse = [String]()
+    func recordMouse(loc: NSPoint){
+        let p = "\(counter) : CGPoint(x:\(loc.x) , y:\(NSScreen.main!.frame.maxY - loc.y)),"
+        mouse.append(p)
+    }
+    
+    func printRecords(){
+        commands.forEach{
+         print($0)
+        }
+        print("---------------------------------------")
+        mouse.forEach{
+            print($0)
+        }
     }
     
     var counter = UInt64(0)
     
     func updateCommands(){
-      counter+=1
+        if let val = perform[Int(counter)] {
+            if( buttons[UInt16(val)] != nil){
+                buttons[UInt16(val)] = !buttons[UInt16(val)]!
+            }
+        }
+        if let val = performMouse[Int(counter)] {
+            if(buttons[Keycode.rightMouse]!){
+                rightMouseUp(point: val)
+            } else{
+                rightMouseDown(point: val)
+            }
+        }
+        counter+=1
+    }
+    
+    func test(){
+        let cfMachPort = CGEvent.tapCreate(tap: CGEventTapLocation.cghidEventTap,
+                                           place: CGEventTapPlacement.headInsertEventTap,
+                                           options: CGEventTapOptions.defaultTap,
+                                           eventsOfInterest: UINT64_MAX,
+                                           callback: {(eventTapProxy, eventType, event, mutablePointer) -> Unmanaged<CGEvent>? in event
+                                        
+                                            let cocoaEventType = NSEvent.EventType(rawValue: UInt(eventType.rawValue))
+
+                                                if [ NSEvent.EventType.gesture ].contains(cocoaEventType) {
+                                                    let cocoaEvent = NSEvent(cgEvent: event)
+                                                    let touches = cocoaEvent?.allTouches()
+                                                    if let tt = touches {
+                                                        for (i,t) in tt.enumerated() {
+                                                            let x = NSString(format: "%.2f", t.normalizedPosition.x)
+                                                            let y = NSString(format: "%.2f", t.normalizedPosition.y)
+                                                           
+                                                            print("Touches [\(i)] x:\(x) y:\(y)")
+                                                          
+                                                        }
+                                                    }
+                                                }
+                                            
+                                            return Unmanaged.passUnretained(event)
+        }, userInfo: nil)
+
+        let runloopSource = CFMachPortCreateRunLoopSource(kCFAllocatorDefault, cfMachPort!, 0)
+
+        let runLoop = RunLoop.current
+        let cfRunLoop = runLoop.getCFRunLoop()
+        CFRunLoopAddSource(cfRunLoop, runloopSource, CFRunLoopMode.defaultMode)
     }
     
     func initController(){
+ 
         source = CGEventSource.init(stateID: CGEventSourceStateID.combinedSessionState)
         source?.localEventsSuppressionInterval = 0
         performClick(point: SCREEN_CENTER)
@@ -182,11 +308,17 @@ class Controller {
         
         NSEvent.addGlobalMonitorForEvents(matching: NSEvent.EventTypeMask.rightMouseDown)
         {   _ in
+            if(self.buttons[Keycode.rightMouse] == false){
+                self.recordMouse(loc: NSEvent.mouseLocation)
+            }
             self.buttons[Keycode.rightMouse] = (true)
         }
     
         NSEvent.addGlobalMonitorForEvents(matching: NSEvent.EventTypeMask.rightMouseUp){
             _ in
+            if(self.buttons[Keycode.rightMouse] == true){
+                self.recordMouse(loc: NSEvent.mouseLocation)
+            }
             self.buttons[Keycode.rightMouse] = (false)
             }
         
