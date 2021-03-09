@@ -12,8 +12,16 @@ class GameScene: SKScene {
     
     let controller = Controller()
     
+    private func readPrivileges(prompt: Bool){
+        let prefPage = "x-apple.systempreferences:com.apple.preference.security?Privacy_Accessibility"
+        if let url = URL(string: prefPage) {
+            NSWorkspace.shared.open(url)
+        }
+    }
+    
     override func sceneDidLoad() {
-        controller.test()
+        readPrivileges(prompt: true)
+        controller.initController()
 //        DispatchQueue.global(qos: .background).async {
 //            while(true){
 //                usleep(10000)
@@ -27,11 +35,10 @@ class GameScene: SKScene {
     }
     
     override func update(_ currentTime: TimeInterval) {
-        //self.controller.updateMagnify()
-        //self.controller.updateCommands()
-        //self.controller.updateJoystick()
-        //self.controller.updateCamera()
-        //self.controller.updateButtons()
+        self.controller.updateCommands()
+        self.controller.updateJoystick()
+        self.controller.updateCamera()
+        self.controller.updateButtons()
     }
     
 }

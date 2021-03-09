@@ -35,32 +35,14 @@ class Controller {
         Keycode.c: false
     ]
     
-    var perform = [
-        0 : 666
-    ]
-    
-    var performMouse = [
-        130 : CGPoint(x:878.3984375 , y:424.51171875),
-        141 : CGPoint(x:878.3984375 , y:424.51171875),
-        325 : CGPoint(x:786.54296875 , y:753.5546875),
-        338 : CGPoint(x:786.54296875 , y:753.5546875),
-        392 : CGPoint(x:786.54296875 , y:753.5546875),
-        405 : CGPoint(x:786.54296875 , y:753.5546875),
-        451 : CGPoint(x:786.54296875 , y:753.5546875),
-        463 : CGPoint(x:786.54296875 , y:753.5546875),
-        510 : CGPoint(x:786.54296875 , y:753.5546875),
-        521 : CGPoint(x:786.54296875 , y:753.5546875),
-        564 : CGPoint(x:786.54296875 , y:753.5546875),
-        575 : CGPoint(x:786.54296875 , y:753.5546875),
-        620 : CGPoint(x:786.54296875 , y:753.5546875),
-        631 : CGPoint(x:786.54296875 , y:753.5546875),
-        712 : CGPoint(x:869.12109375 , y:744.82421875),
-        722 : CGPoint(x:869.12109375 , y:744.82421875),
-        782 : CGPoint(x:869.12109375 , y:744.82421875),
-        791 : CGPoint(x:869.12109375 , y:744.82421875)
-    ]
-    
-
+    class Record {
+        var point = CGPoint(x: 0,y: 0)
+        var btn = false
+        init(point : CGPoint, btn: Bool = false){
+            self.point = point
+            self.btn = btn
+        }
+    }
     func performClick(point: CGPoint){
         DispatchQueue.main.async {
             let eventDown = CGEvent(mouseEventSource: self.source, mouseType: .leftMouseDown, mouseCursorPosition: point , mouseButton: .left)
@@ -189,73 +171,67 @@ class Controller {
     
     func updateButtons(){
         if buttons[Keycode.one]! == (true){
+            recordMouse(loc: FIRST_BTN, btn: true)
             performClick(point: FIRST_BTN)
         }
         if buttons[Keycode.two]! == (true){
+            recordMouse(loc: SECOND_BTN, btn: true)
             performClick(point: SECOND_BTN)
         }
         if buttons[Keycode.three]! == (true){
+            recordMouse(loc: THIRD_BTN, btn: true)
             performClick(point: THIRD_BTN)
         }
         if buttons[Keycode.m]! == (true){
+            recordMouse(loc: RUN_BTN, btn: true)
             performClick(point: RUN_BTN)
         }
         if buttons[Keycode.q]! == (true){
+            recordMouse(loc: ABILITY_BTN, btn: true)
             performClick(point: ABILITY_BTN)
         }
         if buttons[Keycode.f]! == (true){
+            recordMouse(loc: ACTION_BTN, btn: true)
             performClick(point: ACTION_BTN)
         }
         if buttons[Keycode.space]! == (true){
+            recordMouse(loc: SPACE_BTN, btn: true)
             performClick(point: SPACE_BTN)
         }
         if buttons[Keycode.e]! == (true){
+            recordMouse(loc: ATTACK_BTN, btn: true)
             performClick(point: ATTACK_BTN)
         }
         if buttons[Keycode.r]! == (true){
+            recordMouse(loc: BURST_BTN, btn: true)
             performClick(point: BURST_BTN)
         }
         if buttons[Keycode.c]! == (true){
+            recordMouse(loc: SWIM_BTN, btn: true)
             performClick(point: SWIM_BTN)
         }
     }
-    
-    var commands = [String]()
-    func recordCommand(key: UInt16){
-        let p = "\(counter) : \(key),"
-        commands.append(p)
-    }
-    var mouse = [String]()
-    func recordMouse(loc: NSPoint){
-        let p = "\(counter) : CGPoint(x:\(loc.x) , y:\(NSScreen.main!.frame.maxY - loc.y)),"
-        mouse.append(p)
-    }
-    
-    func printRecords(){
-        commands.forEach{
-         print($0)
-        }
-        print("---------------------------------------")
-        mouse.forEach{
-            print($0)
-        }
+   
+    func recordMouse(loc: NSPoint, btn: Bool){
+        
+        print("\(counter) : Record(point: CGPoint(x: \(loc.x) , y: \(NSScreen.main!.frame.maxY - loc.y)), btn: \(btn)),")
     }
     
     var counter = UInt64(0)
     
     func updateCommands(){
-        if let val = perform[Int(counter)] {
-            if( buttons[UInt16(val)] != nil){
-                buttons[UInt16(val)] = !buttons[UInt16(val)]!
-            }
-        }
-        if let val = performMouse[Int(counter)] {
-            if(buttons[Keycode.rightMouse]!){
-                rightMouseUp(point: val)
-            } else{
-                rightMouseDown(point: val)
-            }
-        }
+//        if let val = perform[Int(counter)] {
+//            if(val.btn){
+//                performClick(point: val.point)
+//            } else{
+//                if(buttons[Keycode.rightMouse]!){
+//                    rightMouseUp(point: val.point)
+//                } else{
+//                    rightMouseDown(point: val.point)
+//                }
+//            }
+//
+//        }
         counter+=1
     }
     
@@ -300,16 +276,13 @@ class Controller {
         
         NSEvent.addGlobalMonitorForEvents(matching: NSEvent.EventTypeMask.keyDown)
         {
-            if(self.buttons[UInt16($0.keyCode)] == false){
-                self.recordCommand(key: UInt16($0.keyCode))
-            }
             self.buttons[UInt16($0.keyCode)] =  (true)
         }
         
         NSEvent.addGlobalMonitorForEvents(matching: NSEvent.EventTypeMask.rightMouseDown)
         {   _ in
             if(self.buttons[Keycode.rightMouse] == false){
-                self.recordMouse(loc: NSEvent.mouseLocation)
+                self.recordMouse(loc: NSEvent.mouseLocation,btn: false)
             }
             self.buttons[Keycode.rightMouse] = (true)
         }
@@ -317,15 +290,12 @@ class Controller {
         NSEvent.addGlobalMonitorForEvents(matching: NSEvent.EventTypeMask.rightMouseUp){
             _ in
             if(self.buttons[Keycode.rightMouse] == true){
-                self.recordMouse(loc: NSEvent.mouseLocation)
+                self.recordMouse(loc: NSEvent.mouseLocation, btn: false)
             }
             self.buttons[Keycode.rightMouse] = (false)
             }
         
         NSEvent.addGlobalMonitorForEvents(matching: NSEvent.EventTypeMask.keyUp){
-            if(self.buttons[UInt16($0.keyCode)] == true){
-                self.recordCommand(key: UInt16($0.keyCode))
-            }
             self.buttons[UInt16($0.keyCode)] = (false)
             }
     }
