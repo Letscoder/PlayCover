@@ -4,6 +4,8 @@ import UserNotifications
 import SpriteKit
 import Carbon.HIToolbox
 import Cocoa
+import RealmSwift
+
 
 let SCREEN_CENTER = CGPoint(x: 720, y: 450)
 
@@ -35,21 +37,18 @@ class Controller {
         Keycode.c: false
     ]
     
-    class Record {
-        var point = CGPoint(x: 0,y: 0)
-        var btn = false
-        init(point : CGPoint, btn: Bool = false){
-            self.point = point
-            self.btn = btn
-        }
-    }
+    // 0 - btn, 1 - rmd, 2 - rmu
+    
     func performClick(point: CGPoint){
-        DispatchQueue.main.async {
-            let eventDown = CGEvent(mouseEventSource: self.source, mouseType: .leftMouseDown, mouseCursorPosition: point , mouseButton: .left)
-            let eventUp = CGEvent(mouseEventSource: self.source, mouseType: .leftMouseUp, mouseCursorPosition: point, mouseButton: .left)
-            eventDown?.post(tap: .cghidEventTap)
-            eventUp?.post(tap: .cghidEventTap)
-        }
+//        DispatchQueue.main.async {
+//            let eventDown = CGEvent(mouseEventSource: self.source, mouseType: .leftMouseDown, mouseCursorPosition: point , mouseButton: .left)
+//            let eventUp = CGEvent(mouseEventSource: self.source, mouseType: .leftMouseUp, mouseCursorPosition: point, mouseButton: .left)
+//            eventDown?.post(tap: .cghidEventTap)
+//            eventUp?.post(tap: .cghidEventTap)
+//        }
+        
+        ExtensionEvent.post(x: Int(point.x), y: Int(point.y))
+        
     }
     
     func rightMouseUp(point: CGPoint){
@@ -66,7 +65,7 @@ class Controller {
         }
     }
 
-    private func moveJoystick(direction: CGPoint){
+    private func leftMouseDown(direction: CGPoint){
         DispatchQueue.main.async {
             let position = direction
             let eventDown = CGEvent(mouseEventSource: self.source, mouseType: .leftMouseDown, mouseCursorPosition: position , mouseButton: .left)
@@ -97,16 +96,16 @@ class Controller {
         
         if(!moveDx.isEqual(to: CGFloat(310)) || !moveDy.isEqual(to: CGFloat(740))){
             isMoving = true
-            moveJoystick(direction: CGPoint(x: moveDx, y: moveDy))
+            leftMouseDown(direction: CGPoint(x: moveDx, y: moveDy))
         } else{
             if(isMoving){
-                stopJoystick(direction: SCREEN_CENTER)
+                leftMouseUp(direction: SCREEN_CENTER)
                 isMoving = false
             }
         }
     }
     
-    func stopJoystick(direction: CGPoint){
+    func leftMouseUp(direction: CGPoint){
         let position = direction
         let eventUp = CGEvent(mouseEventSource: source, mouseType: .leftMouseUp, mouseCursorPosition: position , mouseButton: .left)
         eventUp?.post(tap: .cghidEventTap)
@@ -131,16 +130,16 @@ class Controller {
         var cameraDy = ZERO
         
         if buttons[Keycode.downArrow]! == (true){
-            cameraDy = CGFloat(10)
+            cameraDy = CGFloat(5)
         }
         if buttons[Keycode.upArrow]! == (true){
-            cameraDy = CGFloat(-10)
+            cameraDy = CGFloat(-5)
         }
         if buttons[Keycode.rightArrow]! == (true){
-            cameraDx = CGFloat(10)
+            cameraDx = CGFloat(5)
         }
         if buttons[Keycode.leftArrow]! == (true){
-            cameraDx = CGFloat(-10)
+            cameraDx = CGFloat(-5)
         }
         
         if(!cameraDx.isZero || !cameraDy.isZero){
@@ -148,7 +147,7 @@ class Controller {
             cameraRotate(dx: cameraDx, dy: cameraDy)
         } else{
             if(isCameraMoving){
-                stopJoystick(direction: SCREEN_CENTER)
+                leftMouseUp(direction: SCREEN_CENTER)
                 isCameraMoving = false
             }
         }
@@ -171,67 +170,100 @@ class Controller {
     
     func updateButtons(){
         if buttons[Keycode.one]! == (true){
-            recordMouse(loc: FIRST_BTN, btn: true)
             performClick(point: FIRST_BTN)
-        }
-        if buttons[Keycode.two]! == (true){
-            recordMouse(loc: SECOND_BTN, btn: true)
+        } else if buttons[Keycode.two]! == (true){
             performClick(point: SECOND_BTN)
         }
-        if buttons[Keycode.three]! == (true){
-            recordMouse(loc: THIRD_BTN, btn: true)
+        else if buttons[Keycode.three]! == (true){
             performClick(point: THIRD_BTN)
         }
-        if buttons[Keycode.m]! == (true){
-            recordMouse(loc: RUN_BTN, btn: true)
+        else if buttons[Keycode.m]! == (true){
             performClick(point: RUN_BTN)
         }
-        if buttons[Keycode.q]! == (true){
-            recordMouse(loc: ABILITY_BTN, btn: true)
+        else if buttons[Keycode.q]! == (true){
             performClick(point: ABILITY_BTN)
         }
-        if buttons[Keycode.f]! == (true){
-            recordMouse(loc: ACTION_BTN, btn: true)
+        else if buttons[Keycode.f]! == (true){
             performClick(point: ACTION_BTN)
         }
-        if buttons[Keycode.space]! == (true){
-            recordMouse(loc: SPACE_BTN, btn: true)
+        else if buttons[Keycode.space]! == (true){
             performClick(point: SPACE_BTN)
         }
-        if buttons[Keycode.e]! == (true){
-            recordMouse(loc: ATTACK_BTN, btn: true)
+        else if buttons[Keycode.e]! == (true){
             performClick(point: ATTACK_BTN)
         }
-        if buttons[Keycode.r]! == (true){
-            recordMouse(loc: BURST_BTN, btn: true)
+        else if buttons[Keycode.r]! == (true){
             performClick(point: BURST_BTN)
         }
-        if buttons[Keycode.c]! == (true){
-            recordMouse(loc: SWIM_BTN, btn: true)
+        else if buttons[Keycode.c]! == (true){
             performClick(point: SWIM_BTN)
         }
     }
    
-    func recordMouse(loc: NSPoint, btn: Bool){
+    
+    func recordMouse(loc: NSPoint, type : Int){
+        if(!perform){
+            let record = RecordMacro(ts: Double(Double(counter) + stepCounter), type: type, key: 0x00, x: Int(loc.x), y: Int(NSScreen.main!.frame.maxY - loc.y))
+            try! localRealm!.write {
+                localRealm!.add(record, update: .modified)
+            }
+            stepCounter+=0.1
+        }
         
-        print("\(counter) : Record(point: CGPoint(x: \(loc.x) , y: \(NSScreen.main!.frame.maxY - loc.y)), btn: \(btn)),")
+    }
+    
+    func recordButton(keycode : UInt16){
+        if (!perform){
+            let record = RecordMacro(ts: Double(Double(counter) + stepCounter), type: 0, key: Int(keycode), x: 0, y: 0)
+            try! localRealm!.write {
+                localRealm!.add(record, update: .modified)
+            }
+            stepCounter+=0.1
+        }
     }
     
     var counter = UInt64(0)
+    var stepCounter = 0.0
+
+    // 0 - btn, 1 - lmd, 2 - lmu, 3 - rmd, 4 - rmu
+    
+    let perform = false
     
     func updateCommands(){
-//        if let val = perform[Int(counter)] {
-//            if(val.btn){
-//                performClick(point: val.point)
-//            } else{
-//                if(buttons[Keycode.rightMouse]!){
-//                    rightMouseUp(point: val.point)
-//                } else{
-//                    rightMouseDown(point: val.point)
-//                }
-//            }
-//
-//        }
+        if(perform){
+            
+            if let val = localRealm?.object(ofType: RecordMacro.self, forPrimaryKey: "\(Double(counter))"){
+                let point = CGPoint(x: val.x, y : val.y)
+                switch(val.type){
+                case 0: buttons[UInt16(val.key)] = !buttons[UInt16(val.key)]!; break;
+                case 1: rightMouseDown(point: point)
+                case 2: rightMouseUp(point: point)
+                default: break;
+                }
+            }
+            
+            if let val = localRealm?.object(ofType: RecordMacro.self, forPrimaryKey: "\(Double(counter) + 0.1)"){
+                let point = CGPoint(x: val.x, y : val.y)
+                switch(val.type){
+                case 0: buttons[UInt16(val.key)] = !buttons[UInt16(val.key)]!; break;
+                case 1: rightMouseDown(point: point)
+                case 2: rightMouseUp(point: point)
+                default: break;
+                }
+            }
+            
+            if let val = localRealm?.object(ofType: RecordMacro.self, forPrimaryKey: "\(Double(counter) + 0.2)"){
+                let point = CGPoint(x: val.x, y : val.y)
+                switch(val.type){
+                case 0: buttons[UInt16(val.key)] = !buttons[UInt16(val.key)]!; break;
+                case 1: rightMouseDown(point: point)
+                case 2: rightMouseUp(point: point)
+                default: break;
+                }
+            }
+        
+        }
+        stepCounter = 0
         counter+=1
     }
     
@@ -268,21 +300,33 @@ class Controller {
         CFRunLoopAddSource(cfRunLoop, runloopSource, CFRunLoopMode.defaultMode)
     }
     
+    var localRealm : Realm?
+    var records : Results<RecordMacro>?
+    
     func initController(){
- 
+        localRealm = try! Realm()
+        if(!perform){
+            try! localRealm!.write {
+                localRealm!.deleteAll()
+            }
+        }
+        records = localRealm!.objects(RecordMacro.self)
         source = CGEventSource.init(stateID: CGEventSourceStateID.combinedSessionState)
         source?.localEventsSuppressionInterval = 0
         performClick(point: SCREEN_CENTER)
         
         NSEvent.addGlobalMonitorForEvents(matching: NSEvent.EventTypeMask.keyDown)
         {
-            self.buttons[UInt16($0.keyCode)] =  (true)
+            if( self.buttons[UInt16($0.keyCode)] != true){
+                self.recordButton(keycode: UInt16($0.keyCode))
+                self.buttons[UInt16($0.keyCode)] =  (true)
+            }
         }
         
         NSEvent.addGlobalMonitorForEvents(matching: NSEvent.EventTypeMask.rightMouseDown)
         {   _ in
             if(self.buttons[Keycode.rightMouse] == false){
-                self.recordMouse(loc: NSEvent.mouseLocation,btn: false)
+                self.recordMouse(loc: NSEvent.mouseLocation, type: 1)
             }
             self.buttons[Keycode.rightMouse] = (true)
         }
@@ -290,13 +334,16 @@ class Controller {
         NSEvent.addGlobalMonitorForEvents(matching: NSEvent.EventTypeMask.rightMouseUp){
             _ in
             if(self.buttons[Keycode.rightMouse] == true){
-                self.recordMouse(loc: NSEvent.mouseLocation, btn: false)
+                self.recordMouse(loc: NSEvent.mouseLocation, type: 2)
             }
             self.buttons[Keycode.rightMouse] = (false)
             }
         
         NSEvent.addGlobalMonitorForEvents(matching: NSEvent.EventTypeMask.keyUp){
-            self.buttons[UInt16($0.keyCode)] = (false)
+            if(self.buttons[UInt16($0.keyCode)] != false){
+                self.recordButton(keycode: UInt16($0.keyCode))
+                self.buttons[UInt16($0.keyCode)] = (false)
+            }
             }
     }
   }

@@ -20,15 +20,12 @@ class GameScene: SKScene {
     }
     
     override func sceneDidLoad() {
-        readPrivileges(prompt: true)
         controller.initController()
 //        DispatchQueue.global(qos: .background).async {
 //            while(true){
 //                usleep(10000)
 //                DispatchQueue.main.async{
-//                    self.controller.updateJoystick()
-//                    self.controller.updateCamera()
-//                    self.controller.updateButtons()
+//
 //                }
 //            }
 //        }

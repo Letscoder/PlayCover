@@ -3,11 +3,15 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
-		FA711B7625DD5A7500A99AEF /* KeyMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA711B7525DD5A7500A99AEF /* KeyMap.swift */; };
+		FA1D282C26034EED007BBCF0 /* KeyMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA1D282B26034EED007BBCF0 /* KeyMap.swift */; };
+		FA4B17ED26132B5700D64A00 /* ExtensionListener.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA4B17EC26132B5700D64A00 /* ExtensionListener.swift */; };
+		FA80D96F2607CACB00172D5E /* Realm in Frameworks */ = {isa = PBXBuildFile; productRef = FA80D96E2607CACB00172D5E /* Realm */; };
+		FA80D9712607CACB00172D5E /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = FA80D9702607CACB00172D5E /* RealmSwift */; };
+		FA93EFF626065C7900695E08 /* Record.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA93EFF526065C7900695E08 /* Record.swift */; };
 		FAEF25B925D8A6D8002A6F7A /* PlayCoverApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAEF25B825D8A6D8002A6F7A /* PlayCoverApp.swift */; };
 		FAEF25BD25D8A6D9002A6F7A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FAEF25BC25D8A6D9002A6F7A /* Assets.xcassets */; };
 		FAEF25C025D8A6D9002A6F7A /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FAEF25BF25D8A6D9002A6F7A /* Preview Assets.xcassets */; };
@@ -16,7 +20,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		FA711B7525DD5A7500A99AEF /* KeyMap.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyMap.swift; sourceTree = "<group>"; };
+		FA1D282B26034EED007BBCF0 /* KeyMap.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyMap.swift; sourceTree = "<group>"; };
+		FA4B17EC26132B5700D64A00 /* ExtensionListener.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionListener.swift; sourceTree = "<group>"; };
+		FA93EFF526065C7900695E08 /* Record.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Record.swift; sourceTree = "<group>"; };
 		FAEF25B525D8A6D8002A6F7A /* PlayCover.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PlayCover.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FAEF25B825D8A6D8002A6F7A /* PlayCoverApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayCoverApp.swift; sourceTree = "<group>"; };
 		FAEF25BC25D8A6D9002A6F7A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -32,6 +38,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FA80D9712607CACB00172D5E /* RealmSwift in Frameworks */,
+				FA80D96F2607CACB00172D5E /* Realm in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -57,7 +65,6 @@
 		FAEF25B725D8A6D8002A6F7A /* PlayCover */ = {
 			isa = PBXGroup;
 			children = (
-				FA711B7525DD5A7500A99AEF /* KeyMap.swift */,
 				FAEF25CA25D8A70A002A6F7A /* Controller.swift */,
 				FAEF25C925D8A70A002A6F7A /* GameScene.swift */,
 				FAEF25B825D8A6D8002A6F7A /* PlayCoverApp.swift */,
@@ -65,6 +72,9 @@
 				FAEF25C125D8A6D9002A6F7A /* Info.plist */,
 				FAEF25C225D8A6D9002A6F7A /* PlayCover.entitlements */,
 				FAEF25BE25D8A6D9002A6F7A /* Preview Content */,
+				FA1D282B26034EED007BBCF0 /* KeyMap.swift */,
+				FA93EFF526065C7900695E08 /* Record.swift */,
+				FA4B17EC26132B5700D64A00 /* ExtensionListener.swift */,
 			);
 			path = PlayCover;
 			sourceTree = "<group>";
@@ -94,6 +104,8 @@
 			);
 			name = PlayCover;
 			packageProductDependencies = (
+				FA80D96E2607CACB00172D5E /* Realm */,
+				FA80D9702607CACB00172D5E /* RealmSwift */,
 			);
 			productName = PlayCover;
 			productReference = FAEF25B525D8A6D8002A6F7A /* PlayCover.app */;
@@ -123,6 +135,7 @@
 			);
 			mainGroup = FAEF25AC25D8A6D8002A6F7A;
 			packageReferences = (
+				FA80D96D2607CACB00172D5E /* XCRemoteSwiftPackageReference "realm-cocoa" */,
 			);
 			productRefGroup = FAEF25B625D8A6D8002A6F7A /* Products */;
 			projectDirPath = "";
@@ -151,8 +164,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				FAEF25CB25D8A70A002A6F7A /* GameScene.swift in Sources */,
+				FA4B17ED26132B5700D64A00 /* ExtensionListener.swift in Sources */,
 				FAEF25B925D8A6D8002A6F7A /* PlayCoverApp.swift in Sources */,
-				FA711B7625DD5A7500A99AEF /* KeyMap.swift in Sources */,
+				FA93EFF626065C7900695E08 /* Record.swift in Sources */,
+				FA1D282C26034EED007BBCF0 /* KeyMap.swift in Sources */,
 				FAEF25CC25D8A70A002A6F7A /* Controller.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -345,6 +360,30 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		FA80D96D2607CACB00172D5E /* XCRemoteSwiftPackageReference "realm-cocoa" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/realm/realm-cocoa.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 10.7.2;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		FA80D96E2607CACB00172D5E /* Realm */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = FA80D96D2607CACB00172D5E /* XCRemoteSwiftPackageReference "realm-cocoa" */;
+			productName = Realm;
+		};
+		FA80D9702607CACB00172D5E /* RealmSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = FA80D96D2607CACB00172D5E /* XCRemoteSwiftPackageReference "realm-cocoa" */;
+			productName = RealmSwift;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = FAEF25AD25D8A6D8002A6F7A /* Project object */;
 }
